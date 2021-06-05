@@ -19,7 +19,7 @@ const jsLoaders = () => {
         }
     ]
     if (isDev) {
-        loaders.push('eslint-liader')
+        loaders.push('eslint-loader')
     }
     return loaders
 }
@@ -27,6 +27,7 @@ const jsLoaders = () => {
 module.exports = {
     context: path.resolve(__dirname, 'src'),
     mode: 'development',
+    target: 'web',
     entry: ['@babel/polyfill', './index.js'],
     output: {
         filename: fileName('js'),
@@ -42,7 +43,7 @@ module.exports = {
     devtool: isDev ? 'source-map' : false,
     devServer: {
         port: 3000,
-        hot: isDev
+        // hot: isDev
     },
     plugins: [
         new CleanWebpackPlugin(),
@@ -70,7 +71,12 @@ module.exports = {
             {
                 test: /\.s[ac]ss$/i,
                 use: [
-                    MiniCssExtractPlugin.loader,
+                    {
+                        loader: MiniCssExtractPlugin.loader,
+                        options: {
+                            // reloadAll: true
+                        }
+                    },
                     'css-loader',
                     'sass-loader',
                 ],
